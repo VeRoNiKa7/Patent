@@ -263,7 +263,7 @@ mds = MDS(n_components=2, dissimilarity="precomputed", random_state=1)
 pos = mds.fit_transform(dist)
 xs, ys = pos[:, 0], pos[:, 1]
 cluster_colors = {0: '#3333CC', 1: '#FFFF00', 2: '#00FF00'}
-df = pd.DataFrame(dict(x=xs, y=ys, prediction=cluster_array, title=uniq_array))
+df = pd.DataFrame(dict(x=xs, y=ys, prediction=cluster_array, title=pat_array))
 # Группируем кластеры
 groups = df.groupby('label')
 # Настраиваем вывод
@@ -296,99 +296,3 @@ for i in range(len(df)):
 plt.show()  # Вывод ландшафта
 
 spark.stop()
-
-"""
-from pymongo import MongoClient
-
-# Create the client
-client = MongoClient('localhost', 27017)
-
-# Connect to our database
-db = client['Patent']
-
-# Fetch our series collection
-series_collection = db['patents']
-
-def insert_document(collection, data):
-    #Function to insert a document into a collection and return the document's id.
-    return collection.insert_one(data).inserted_id
-
-
-def find_document(collection, elements, multiple=False):
-    """ #Function to retrieve single or multiple documents from a provided
-#Collection using a dictionary containing a document's elements.
-"""
-    if multiple:
-        results = collection.find(elements)
-        return [r for r in results]
-    else:
-        return collection.find_one(elements)
-
-def update_document(collection, query_elements, new_values):
-    #Function to update a single document in a collection.
-    collection.update_one(query_elements, {'$set': new_values})
-
-def delete_document(collection, query):
-    #Function to delete a single document from a collection.
-    collection.delete_one(query)
-
-# new_show = {
-#     "name": "FRIENDS",
-#     "year": 1994
-# }
-
-#print(insert_document(series_collection, new_show))
-# result = find_document(series_collection, {'name': 'FRIENDS'})
-# print(result)
-new_show = {
-    "name": "FRIENDS",
-    "year": 1995
-}
-id_ = insert_document(series_collection, new_show)
-# update_document(series_collection, {'_id': id_}, {'name': 'F.R.I.E.N.D.S'})
-# result = find_document(series_collection, {'_id': id_})
-# print(result)
-
-delete_document(series_collection, {'_id': id_})
-result = find_document(series_collection, {'_id': id_})
-print(result)
-"""
-
-
-# from models import SAO
-# from udpipe import UDPipeParser
-# from itertools import chain, islice
-# import re
-# MODEL = "/home/vagrant/english-ewt-ud-2.5-191206.udpipe"
-# TEXT = """
-#     The super-capacitor electrode further comprises a silane coupling agent. The electrode comprises a silane coupling agent.
-# """
-# string = """
-#     1. i love you (ex nothing) (1056). 4. The device according to claim 3, the super-capacitor electrode further comprises a silane coupling agent. 1) A super-capacitor electrode comprising a metal foil as a current collector, an active material, a conductive agent and an organic adhesive agent, wherein the super-capacitor electrode further comprises a silane coupling agent for binding the organic adhesive agent and the uncorroded smooth metal foil, and The electrode comprises a silane coupling agent.
-# """
-# #A super-capacitor electrode comprising a metal foil as a current collector, an active material, a conductive agent and an organic adhesive agent, wherein the metal foil is an uncorroded smooth metal foil, and the super-capacitor electrode further comprises a silane coupling agent for binding the organic adhesive agent and the uncorroded smooth metal foil so that the active material is adhered to the uncorroded smooth metal foil.
-# if __name__ == "__main__":
-#     str = re.sub(
-#         r'(\s*)(, wherein|, said|, and|; and|, thereby|if|else|thereby|such that|so that|wherein|whereby|where|when|while|but|:|;)',
-#         r'.', string)
-#     str = re.sub(
-#         r'(\s+|^)(\d{1,4}|[a-zA-Z]{1,2})(\.|\))',
-#         r'', str)
-#     str = re.sub(
-#         r'\.\s.+(of|in|to) claim \d+(, )?',
-#         r'. ', str)
-#     str = re.sub(
-#         r'\s\(.+\)',
-#         r'', str)
-#     print(str)
-#     parser = UDPipeParser(MODEL)
-#     trees = parser.parse(str)
-#     sao = chain(*map(SAO.extract, trees))
-#     first, second, three = islice(sao, 3)
-#     #print("K:", first.compare(second))
-#     print("First:")
-#     print(first._tree)
-#     print("Second:")
-#     print(second._tree)
-#     print("three:")
-#     print(three._tree)
