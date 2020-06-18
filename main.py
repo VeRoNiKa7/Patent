@@ -263,7 +263,7 @@ mds = MDS(n_components=2, dissimilarity="precomputed", random_state=1)
 pos = mds.fit_transform(dist)
 xs, ys = pos[:, 0], pos[:, 1]
 cluster_colors = {0: '#3333CC', 1: '#FFFF00', 2: '#00FF00'}
-df = pd.DataFrame(dict(x=xs, y=ys, prediction=cluster_array, title=pat_array))
+df = pd.DataFrame(dict(x=xs, y=ys, label=cluster_array, title=pat_array))
 # Группируем кластеры
 groups = df.groupby('label')
 # Настраиваем вывод
